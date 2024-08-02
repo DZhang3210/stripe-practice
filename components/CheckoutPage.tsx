@@ -1,4 +1,5 @@
 "use client";
+import { createPaymentIntent } from "@/app/_actions/createPaymentIntent";
 import convertToSubcurrency from "@/lib/convertToSubcurrency";
 import {
   PaymentElement,
@@ -19,15 +20,23 @@ const CheckoutPage = ({ amount }: CheckoutPageProps) => {
   const [clientSecret, setClientSecret] = useState("");
   const [loading, setLoading] = useState(false);
   useEffect(() => {
-    fetch("/api/create-payment-intent", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ amount: convertToSubcurrency(amount) }),
-    })
-      .then((res) => res.json())
-      .then((data) => setClientSecret(data.clientSecret));
+    // fetch("/api/create-payment-intent", {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify({ amount: convertToSubcurrency(amount) }),
+    // })
+    //   .then((res) => res.json())
+    //   .then((data) => setClientSecret(data.clientSecret));
+    const createClientSecret = async () => {
+      const clientSecret = (
+        await createPaymentIntent({ amount: convertToSubcurrency(amount) })
+      )?.clientSecret;
+      console.log(clientSecret);
+      setClientSecret(clientSecret);
+    };
+    createClientSecret();
   }, [amount]);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -49,7 +58,7 @@ const CheckoutPage = ({ amount }: CheckoutPageProps) => {
       elements,
       clientSecret,
       confirmParams: {
-        return_url: `https://www.localhost:3000/payment-success?amount=${amount}`,
+        return_url: `http://www.localhost:3000/payment-success?amount=${amount}`,
       },
     });
 
@@ -61,15 +70,17 @@ const CheckoutPage = ({ amount }: CheckoutPageProps) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="bg-white p-2 rounded-md">
-      {clientSecret && <PaymentElement />}
-      <button
-        disabled={!stripe || loading}
-        className="text-white w-full p-5 bg-black mt-2 rounded-md font-bold disabled:opacity-50 disabled:animate-pulse"
-      >
-        {!loading ? `Pay $${amount}` : "Processing..."}
-      </button>
-    </form>
+    <>
+      <form onSubmit={handleSubmit} className="bg-white p-2 rounded-md">
+        {clientSecret && <PaymentElement />}
+        <button
+          disabled={!stripe || loading}
+          className="text-white w-full p-5 bg-black mt-2 rounded-md font-bold disabled:opacity-50 disabled:animate-pulse"
+        >
+          {!loading ? `Pay $${amount}` : "Processing..."}
+        </button>
+      </form>
+    </>
   );
 };
 

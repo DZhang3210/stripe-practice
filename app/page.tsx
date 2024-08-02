@@ -1,6 +1,6 @@
 "use client";
 import CheckoutPage from "@/components/CheckoutPage";
-import convertToSubsurrency from "@/lib/convertToSubcurrency";
+import convertToSubcurrency from "@/lib/convertToSubcurrency";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 
@@ -13,7 +13,7 @@ const stripePromise = loadStripe(
 );
 
 export default function Home() {
-  const amount = 49.99;
+  const amount = 19.99;
 
   return (
     <main className="max-w-6xl mx-auto p-10 text-white text-center border m-10 rounded-md bg-gradient-to-tr from-blue-500 to-purple-500">
@@ -28,7 +28,7 @@ export default function Home() {
         stripe={stripePromise}
         options={{
           mode: "payment",
-          amount: convertToSubsurrency(amount), //cents
+          amount: convertToSubcurrency(amount), //cents
           currency: "usd",
         }}
       >
