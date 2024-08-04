@@ -20,26 +20,25 @@ export default function SimpleEmail() {
         <Head />
         <Body>
           <Container className="border border-black">
-            <Heading>Simple Email</Heading>
-            <Text>simple text</Text>
+            <Heading>Order Confirmation</Heading>
+            <Text>Thank you for buying</Text>
+            <Section className="border border-black">
+              <Row>
+                <Column>
+                  <Text>Product</Text>
+                  <Text>9.99</Text>
+                </Column>
+                <Column>
+                  <Text>Price</Text>
+                  <Text>14.99</Text>
+                </Column>
+                <Column>
+                  <Text>Date</Text>
+                  <Text>14.99</Text>
+                </Column>
+              </Row>
+            </Section>
           </Container>
-          <Section className="border border-black">
-            <Column>
-              <Row>Name</Row>
-              <Row>Bob</Row>
-              <Row>Mikey</Row>
-            </Column>
-            <Column>
-              <Row>Species</Row>
-              <Row>Human</Row>
-              <Row>Cow</Row>
-            </Column>
-            <Column>
-              <Row>Race</Row>
-              <Row>Human</Row>
-              <Row>Black</Row>
-            </Column>
-          </Section>
         </Body>
       </Tailwind>
     </Html>
